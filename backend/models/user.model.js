@@ -30,7 +30,9 @@ const userSchema = new mongoose.Schema({
 
 })
 
-userSchema.methods.generateAuthToken = function(){
+
+// this is method so called by instance of userModel 'await user.generateAuthToken(password);'
+userSchema.methods.generateAuthToken = function(){      
       
     try {
 
@@ -45,11 +47,13 @@ userSchema.methods.generateAuthToken = function(){
     }
 }
 
-userSchema.methods.comparePassword = async function(password){
+// this is method so called by instance of userModel 'await user.comparePassword(password);'
+userSchema.methods.comparePassword = async function(password){ 
      return await bcrypt.compare(password, this.password);
 }
 
-userSchema.statics.hashPassword = async function(password){
+// this is static, so called by userModel 'await userModel.hashPassword(password)'
+userSchema.statics.hashPassword = async function(password){   
     return await bcrypt.hash(password,10);
 }
 
