@@ -1,6 +1,7 @@
 const userModel = require('../models/user.model');
 const {validationResult} = require('express-validator');
 const userService = require('../services/user.service');
+const blacklistTokenModel = require('../models/blacklistToken.model');
 
 module.exports.registerUser = async(req,res)=>{
     try {
@@ -83,7 +84,22 @@ module.exports.loginUser = async(req,res)=>{
 
 }
 
-module.exports.logOut = async(req,res)=>{
+module.exports.userProfile = async(req,res,next)=>{
+       // need of middleware to check token have cred of user, then allow to see profile
+       res.status(200).json(req.user);
+
+}
+
+module.exports.logoutUser = async(req,res)=>{
+
+    res.clearCookie('token');
+    const token = req.cookies?.token || req.headers.authorization.split(' ')[1];
+
+    if(token)
+    {
+        await blacklistTokenModel.create({token});
+    }
+    res.status(200).json({message: 'Logged Out'});
 
 }
 

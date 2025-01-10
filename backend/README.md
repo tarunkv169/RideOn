@@ -141,3 +141,84 @@ The request body should be a JSON object containing the following fields:
       "error": "Internal Server Error"
     }
     ```
+
+### GET /users/userProfile
+
+#### Description
+This endpoint is used to get the profile of the logged-in user.
+
+#### HTTP Method
+GET
+
+#### Headers
+- `Authorization`: Bearer token or `token` cookie.
+
+#### Responses
+
+- **200 OK**
+  - **Description**: User profile retrieved successfully.
+  - **Body**: A JSON object containing the user details.
+  - **Example**:
+    ```json
+    {
+      "_id": "user_id",
+      "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+      },
+      "email": "john.doe@example.com"
+    }
+    ```
+
+- **401 Unauthorized**
+  - **Description**: Invalid or missing token.
+  - **Body**: A JSON object containing the error message.
+  - **Example**:
+    ```json
+    {
+      "error": "Unauthorized"
+    }
+    ```
+
+- **500 Internal Server Error**
+  - **Description**: An error occurred on the server.
+  - **Body**: A JSON object containing the error message.
+  - **Example**:
+    ```json
+    {
+      "error": "Internal Server Error"
+    }
+    ```
+
+### GET /users/logout
+
+#### Description
+This endpoint is used to log out the user.
+
+#### HTTP Method
+GET
+
+#### Headers
+- `Authorization`: Bearer token or `token` cookie.
+
+#### Responses
+
+- **200 OK**
+  - **Description**: User successfully logged out.
+  - **Body**: A JSON object containing a success message.
+  - **Example**:
+    ```json
+    {
+      "message": "Logged Out"
+    }
+    ```
+
+- **500 Internal Server Error**
+  - **Description**: An error occurred on the server.
+  - **Body**: A JSON object containing the error message.
+  - **Example**:
+    ```json
+    {
+      "error": "Internal Server Error"
+    }
+    ```

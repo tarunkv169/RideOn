@@ -39,7 +39,11 @@ userSchema.methods.generateAuthToken = function(){
         if (!process.env.JWT_SECRET) {
             throw new Error('JWT_SECRET is not defined');
         }
-        const token = jwt.sign({_id:this._id}, process.env.JWT_SECRET,{expiresIn: "24h"});
+        const token = jwt.sign({_id:this._id}, process.env.JWT_SECRET,{expiresIn: "24h"}); 
+        // do u know why we sign token with secret key
+        //   1. token keep us login until given time
+        //   2. when need to see userprofile(only user which login can see his profile) only possible with token(as it keep login)
+        //        so we check token by verify with secret key-----> u can see it in middleware of userprofile
         return token;
 
     } catch (error) {
