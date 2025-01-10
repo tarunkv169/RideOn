@@ -222,3 +222,113 @@ GET
       "error": "Internal Server Error"
     }
     ```
+
+### /captains/register
+
+**POST** `/captains/register`
+
+Registers a new captain.
+
+#### Request Body
+
+```json
+{
+    "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "password": "password1234",
+    "vehicle": {
+        "color": "red",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+    },
+    "location": {
+        "ltd": 40.7128,
+        "lng": -74.0060
+    }
+}
+```
+
+#### Response
+
+- **201 Created**
+
+```json
+{
+    "token": "jwt_token",
+    "captain": {
+        "_id": "captain_id",
+        "fullname": {
+            "firstname": "John",
+            "lastname": "Doe"
+        },
+        "email": "john.doe@example.com",
+        "vehicle": {
+            "color": "red",
+            "plate": "ABC123",
+            "capacity": 4,
+            "vehicleType": "car"
+        },
+        "location": {
+            "ltd": 40.7128,
+            "lng": -74.0060
+        },
+        "status": "inactive"
+    }
+}
+```
+
+- **400 Bad Request**
+
+```json
+{
+    "message": "Captain already exists"
+}
+```
+
+- **401 Validation Error**
+
+```json
+{
+    "errors": [
+        {
+            "msg": "First name must be at least 3 character long",
+            "param": "fullname.firstname",
+            "location": "body"
+        },
+        {
+            "msg": "Email is invalid",
+            "param": "email",
+            "location": "body"
+        },
+        {
+            "msg": "Password must be at least 6 characters long",
+            "param": "password",
+            "location": "body"
+        },
+        {
+            "msg": "Vehicle color is required",
+            "param": "vehicle.color",
+            "location": "body"
+        },
+        {
+            "msg": "Vehicle plate is required",
+            "param": "vehicle.plate",
+            "location": "body"
+        },
+        {
+            "msg": "Vehicle capacity must be a positive integer",
+            "param": "vehicle.capacity",
+            "location": "body"
+        },
+        {
+            "msg": "Vehicle type is required",
+            "param": "vehicle.vehicleType",
+            "location": "body"
+        }
+    ]
+}
+```
