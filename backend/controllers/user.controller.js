@@ -13,6 +13,12 @@ module.exports.registerUser = async(req,res)=>{
         
         const {fullname,email,password} = req.body;
 
+        const isUser = await userModel.findOne({'email':email})
+        if(isUser)
+        {
+            return res.status(400).json({message:'User already exists'});
+        }
+
         // hash the password first then send to save in db
         // @ts-ignore
         const hashedpassword = await userModel.hashPassword(password);
@@ -70,7 +76,7 @@ module.exports.loginUser = async(req,res)=>{
         // 3️⃣if email and password are valid , then create token for user to remain login for 24 hours as we mentioned, by 
         //      putting in cookie of website
         // @ts-ignore
-        const token = user.generateAuthToken();
+        const token = await user.generateAuthToken();
         res.cookie('token',token);
 
 

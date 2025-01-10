@@ -1,11 +1,12 @@
 const captainModel = require('../models/captain.model');
 const {validationResult} = require('express-validator')
 const captainService = require('../services/captain.service');
+const blacklistTokenModel = require('../models/blacklistToken.model');
 
 
 module.exports.registerCaptain = async(req,res)=>{
-
-       const errors = await validationResult(req);
+   try {
+      const errors = await validationResult(req);
        if(!errors.isEmpty())
        {
           return res.status(401).json({errors:errors.array()});
@@ -40,5 +41,77 @@ module.exports.registerCaptain = async(req,res)=>{
        const token = captain.generateAuthToken();
 
        res.status(201).json({token,captain});
+   } catch (error) {
+      console.log(error);
+      return res.status(500).json({message:'Internal Server Error'});
+   }
+       
        
 }
+
+module.exports.loginCaptain = async(req,res)=>{
+   try {
+      const errors = validationResult(req);
+      if(!errors.isEmpty())
+      {
+         return res.status(400).json({errors:errors.array()});
+      }
+
+      const {email,password} = req.body;
+
+      //1
+      const captain = await captainModel.findOne({'email':email}).select('+password');
+      if(!captain)
+      {
+         return res.status(400).json({message:'Invalid email and password'});
+      }
+
+      //2
+      if(!password)
+      {
+         return res.status(400).json({message:'Invalid email and password'});
+      }
+      // @ts-ignore
+      const isMatch = await captain.comparePassword(password);
+      if(!isMatch)
+      {
+          return res.status(401).json({message:'Unauthorized'});
+      }
+
+      // @ts-ignore
+      const token = await captain.generateAuthToken();
+
+      res.cookie('token',token);
+
+      res.status(200).json({token,captain});
+
+   } catch (error) {
+      console.log(error);
+      return res.status(500).json({message:'Internal Server Error'});
+   }
+}
+
+module.exports.captainProfile = async(req,res)=>{
+   return res.status(201).json(req.captain);
+}
+
+module.exports.logoutCaptain = async(req,res)=>{
+   try {
+      res.clearCookie('token');
+
+      const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
+
+      if(token)
+      {
+          await blacklistTokenModel.create({token});
+      }
+
+      return res.status(201).json({message:'Logged Out'})
+
+   } catch (error) {
+      console.log(error);
+      return res.status(500).json({message:'Internal Server Error'});
+   }
+}
+
+

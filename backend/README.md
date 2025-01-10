@@ -332,3 +332,143 @@ Registers a new captain.
     ]
 }
 ```
+
+### /captains/login
+
+**POST** `/captains/login`
+
+Logs in an existing captain.
+
+#### Request Body
+
+```json
+{
+    "email": "john.doe@example.com",
+    "password": "password1234"
+}
+```
+
+#### Response
+
+- **200 OK**
+
+```json
+{
+    "token": "jwt_token",
+    "captain": {
+        "_id": "captain_id",
+        "fullname": {
+            "firstname": "John",
+            "lastname": "Doe"
+        },
+        "email": "john.doe@example.com",
+        "vehicle": {
+            "color": "red",
+            "plate": "ABC123",
+            "capacity": 4,
+            "vehicleType": "car"
+        },
+        "location": {
+            "ltd": 40.7128,
+            "lng": -74.0060
+        },
+        "status": "inactive"
+    }
+}
+```
+
+- **400 Bad Request**
+
+```json
+{
+    "message": "Invalid email and password"
+}
+```
+
+- **500 Internal Server Error**
+
+```json
+{
+    "message": "Internal Server Error"
+}
+```
+
+### /captains/profile
+
+**GET** `/captains/profile`
+
+Gets the profile of the logged-in captain.
+
+#### Headers
+
+- `Authorization`: Bearer token or `token` cookie.
+
+#### Response
+
+- **200 OK**
+
+```json
+{
+    "_id": "captain_id",
+    "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "vehicle": {
+        "color": "red",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+    },
+    "location": {
+        "ltd": 40.7128,
+        "lng": -74.0060
+    },
+    "status": "inactive"
+}
+```
+
+- **401 Unauthorized**
+
+```json
+{
+    "message": "Unauthorized"
+}
+```
+
+- **500 Internal Server Error**
+
+```json
+{
+    "message": "Internal Server Error"
+}
+```
+
+### /captains/logout
+
+**GET** `/captains/logout`
+
+Logs out the captain.
+
+#### Headers
+
+- `Authorization`: Bearer token or `token` cookie.
+
+#### Response
+
+- **200 OK**
+
+```json
+{
+    "message": "Logged Out"
+}
+```
+
+- **500 Internal Server Error**
+
+```json
+{
+    "message": "Internal Server Error"
+}
+```
