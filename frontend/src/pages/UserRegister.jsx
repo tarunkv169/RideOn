@@ -47,10 +47,10 @@ const onSubmitHandler=async(e)=>{
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-center bg-cover md:bg-contain lg:bg-cover bg-[url(https://images.pexels.com/photos/5584203/pexels-photo-5584203.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load)]">
-      <div className="py-12 px-4 w-full max-w-lg h-screen w-full">
-      <div className="h-full flex flex-col justify-between w-full bg-white/26 backdrop-blur-lg border border-yellow-500 rounded-xl">
+      <div className="py-12 px-4 w-full max-w-lg h-screen">
+      <div className="h-full flex flex-col justify-between w-full bg-black/50 backdrop-blur-lg border border-yellow-500 rounded-xl">
         <div >
-          <img src={rideon} alt="no_img" className="w-28 mb-10 mt-4 mx-auto" />
+          <img src={rideon} alt="no_img" className="w-28 mb-10 mt-4 mx-auto bg-[#f5b901] rounded-tl-lg rounded-br-lg" />
           <form onSubmit={(e)=>{onSubmitHandler(e)}}>
               <h3 className="text-lg font-medium mb-2 ml-10">What's your name</h3>
               <div className="flex items-center justify-center mx-auto mb-7 w-10/12 gap-3">
@@ -91,7 +91,7 @@ const onSubmitHandler=async(e)=>{
 
               <h3 className="text-lg font-medium mb-2 ml-10">Password</h3>
               <input 
-                type="text"
+                type="password"
                 required
                 value={password}
                 onChange={(e)=>{
@@ -104,7 +104,7 @@ const onSubmitHandler=async(e)=>{
              <button className="inline-block flex items-center justify-center text-white text-lg font-bold mx-auto mt-10 p-2 w-64 bg-black rounded-md ">Create Account</button>
           </form>
           
-           <p className="flex items-center justify-center text-md mt-1 mx-auto ">Already have an account? <Link to={'/login'} className="text-[#3c95de] font-semibold ml-2" >Log in</Link></p>
+           <p className="flex items-center justify-center text-md mt-1 mx-auto ">Already have an account? <Link to={'/login'} className="text-[#3c95de] font-semibold ml-2 shadow-lg" >Log in</Link></p>
 
         </div>
         <div>

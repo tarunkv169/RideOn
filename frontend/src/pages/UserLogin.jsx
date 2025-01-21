@@ -32,10 +32,10 @@ const Userlogin = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-center bg-cover md:bg-contain lg:bg-cover bg-[url(https://images.pexels.com/photos/5584203/pexels-photo-5584203.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load)]">
-      <div className="py-12 px-4 w-full max-w-lg h-screen w-full">
-        <div className="h-full flex flex-col justify-between bg-white/26 backdrop-blur-lg border border-yellow-500 rounded-xl">
+      <div className="py-12 px-4 max-w-lg h-screen w-full">
+        <div className="h-full flex flex-col justify-between bg-black/50 backdrop-blur-lg border border-yellow-500 rounded-xl">
           <div>
-            <img src={rideon} alt="no_img" className="w-28 mb-10 mt-4 mx-auto" />
+            <img src={rideon} alt="no_img" className="w-28 mb-10 mt-4 mx-auto bg-[#f5b901] rounded-tl-lg rounded-br-lg" />
             <form onSubmit={(e) => onSubmitHandler(e)}>
 
               <h3 className="text-lg font-medium mb-2 ml-10">What's your email</h3>
@@ -59,7 +59,7 @@ const Userlogin = () => {
                   setPassword(e.target.value);
                 }}
                 type="password"
-                placeholder="password"
+                placeholder="Password"
                 autoComplete="current-password"
                 className="flex items-center justify-center mb-7 mx-auto py-2 px-4 text-lg w-10/12 bg-[#f2f2f2] rounded border placeholder:text-base"
               />
@@ -68,7 +68,7 @@ const Userlogin = () => {
             </form>
 
 
-              <p className="text-center text-md mt-2">New here?{" "}<Link to={"/register"} className="text-[#3c95de] font-semibold">Create an account</Link></p>
+              <p className="text-center text-md mt-1">New here?{" "}<Link to={"/register"} className="text-[#3c95de] font-semibold text-shadow-black shadow-lg">Create an Account</Link></p>
           </div>
           <div>
             <Link
