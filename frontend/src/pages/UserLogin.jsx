@@ -1,33 +1,50 @@
 // @ts-nocheck
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import rideon from "../assets/photos/rideon.png"
 import car from "../assets/photos/car.jpg"
+import { UserDataContext } from "../context/UserContext";
+import axios from "axios";
 
 
 const Userlogin = () => {
-
+  
+  
+  const navigate = useNavigate();
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
   const [userData,setUserData]=useState({});
+  
+  const [user,setUser] = React.useContext(UserDataContext);
 
-  useEffect(()=>{
-    console.log({userData});
-  },[userData])
+
 
   const onSubmitHandler=async(e)=>{
-
     e.preventDefault();
     
-    setUserData({
-      email: email,
-      password: password
-    })
-
-    
-
-    setEmail('')
-    setPassword('')
+    try {
+      const login_user = ({
+        email: email,
+        password: password
+      })
+  
+  
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`,login_user);
+  
+      if(response.status===201)
+      {
+        const data = response.data;
+        setUser(data.user);
+        localStorage.setItem('token', data.token);
+        navigate('/home');
+      }
+      
+  
+      setEmail('')
+      setPassword('')
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

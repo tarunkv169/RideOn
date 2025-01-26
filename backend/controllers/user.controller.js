@@ -80,7 +80,7 @@ module.exports.loginUser = async(req,res)=>{
         res.cookie('token',token);
 
 
-        res.status(200).json({token,user});
+        res.status(201).json({token,user});
         
 
     } catch (error) {
@@ -92,20 +92,21 @@ module.exports.loginUser = async(req,res)=>{
 
 module.exports.userProfile = async(req,res,next)=>{
        // need of middleware to check token have cred of user, then allow to see profile
-       res.status(200).json(req.user);
+       res.status(201).json(req.user);
 
 }
 
 module.exports.logoutUser = async(req,res)=>{
+    const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
+
+    if (token) {
+        const existingToken = await blacklistTokenModel.findOne({ token });
+        if (!existingToken) {
+            await blacklistTokenModel.create({ token });
+        }
+    }
 
     res.clearCookie('token');
-    const token = req.cookies?.token || req.headers.authorization.split(' ')[1];
-
-    if(token)
-    {
-        await blacklistTokenModel.create({token});
-    }
-    res.status(200).json({message: 'Logged Out'});
-
+    res.status(200).json({ message: 'Logged Out' });
 }
 

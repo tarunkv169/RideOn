@@ -1,7 +1,9 @@
 // @ts-nocheck
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import rideon from "../assets/photos/rideon.png"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserDataContext } from "../context/UserContext";
 
 
 
@@ -11,12 +13,16 @@ import { Link } from "react-router-dom";
 
 const UserRegister = () => {
   
-  const [firstname,setfirstname]=useState('');
+const [firstname,setfirstname]=useState('');
 const [lastname,setlastname]=useState('');
 const [email,setEmail]=useState('');
 const [password,setPassword]=useState('');
 
 const [userData,setUserData]=useState({});
+
+const [user,setUser] = useContext(UserDataContext);
+
+const navigate = useNavigate();
 
 useEffect(() => {
   console.log({ userData });
@@ -26,7 +32,7 @@ useEffect(() => {
 const onSubmitHandler=async(e)=>{
   e.preventDefault();
   
-  setUserData({
+  const newUser = ({
     fullname:{
       firstname:firstname,
       lastname:lastname
@@ -35,6 +41,17 @@ const onSubmitHandler=async(e)=>{
     password:password
   })
 
+  
+  const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`,newUser)
+
+  if(response.status===201)
+  {
+     const data = response.data;
+     setUser(data.user);
+     localStorage.setItem('token', data.token);
+     navigate('/home')
+
+  }
 
 
   setfirstname('');
