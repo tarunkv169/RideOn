@@ -4,7 +4,6 @@ const blackListTokenModel = require('../models/blackListToken.model');
 const { validationResult } = require('express-validator');
 
 
-
 // @ts-ignore
 module.exports.registerCaptain = async (req, res, next) => {
 
@@ -22,7 +21,6 @@ module.exports.registerCaptain = async (req, res, next) => {
     }
 
 
-  
     // @ts-ignore
     const hashedPassword = await captainModel.hashPassword(password);
 
@@ -37,14 +35,12 @@ module.exports.registerCaptain = async (req, res, next) => {
         vehicleType: vehicle.vehicleType
     });
 
-  
     // @ts-ignore
     const token = captain.generateAuthToken();
 
     res.status(201).json({ token, captain });
 
 }
-
 
 // @ts-ignore
 module.exports.loginCaptain = async (req, res, next) => {
@@ -61,7 +57,6 @@ module.exports.loginCaptain = async (req, res, next) => {
         return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-
     // @ts-ignore
     const isMatch = await captain.comparePassword(password);
 
@@ -77,12 +72,10 @@ module.exports.loginCaptain = async (req, res, next) => {
     res.status(200).json({ token, captain });
 }
 
-
 // @ts-ignore
 module.exports.getCaptainProfile = async (req, res, next) => {
     res.status(200).json({ captain: req.captain });
 }
-
 
 // @ts-ignore
 module.exports.logoutCaptain = async (req, res, next) => {
