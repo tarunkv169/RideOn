@@ -85,7 +85,7 @@ const Userlogin = () => {
             </form>
 
 
-              <p className="text-center text-md mt-1">New here?{" "}<Link to={"/register"} className="text-[#3c95de] font-semibold text-shadow-black shadow-lg">Create an Account</Link></p>
+              <p className="text-center text-white text-md mt-1">New here?{" "}<Link to={"/register"} className="text-[#3c95de] font-semibold text-shadow-black shadow-lg">Create an account</Link></p>
           </div>
           <div>
             <Link

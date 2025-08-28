@@ -1,19 +1,23 @@
-import React, { StrictMode } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import { BrowserRouter } from 'react-router-dom'
-import UserContext from './context/UserContext.jsx'
+import { BrowserRouter } from 'react-router-dom';
+import UserContext from './context/UserContext.jsx';
+import CaptainContext from './context/CapatainContext.jsx';
+// import SocketProvider from './context/SocketContext.jsx';
 
-const rootElement = document.getElementById('root');
-if (rootElement) {
-  createRoot(rootElement).render(
-    <StrictMode>
-      <UserContext>
+// @ts-ignore
+createRoot(document.getElementById('root')).render(
+
+  <CaptainContext>
+    <UserContext>
+      {/* <SocketProvider> */}
         <BrowserRouter>
-               <App />
+          <App />
         </BrowserRouter>
-      </UserContext>
-    </StrictMode>,
-  );
-}
+      {/* </SocketProvider> */}
+    </UserContext>
+  </CaptainContext>
+
+)
