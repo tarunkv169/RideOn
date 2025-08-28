@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ConfirmRidePopUp from '../components/ConfirmRidePopUp'
 import { useEffect, useContext } from 'react'
-// import { SocketContext } from '../context/SocketContext'
+import { SocketContext } from '../context/SocketContext'
 import { CaptainDataContext } from '../context/CapatainContext'
 import axios from 'axios'
 
@@ -57,8 +57,10 @@ const CaptainHome = () => {
 
     async function confirmRide() {
 
+        // @ts-ignore
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/confirm`, {
 
+            // @ts-ignore
             rideId: ride._id,
             captainId: captain._id,
 

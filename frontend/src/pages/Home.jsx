@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, { useEffect, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -8,10 +9,12 @@ import VehiclePanel from '../components/VehiclePanel';
 import ConfirmRide from '../components/ConfirmRide';
 import LookingForDriver from '../components/LookingForDriver';
 import WaitingForDriver from '../components/WaitingForDriver';
+// @ts-ignore
 import { SocketContext } from '../context/SocketContext';
 import { useContext } from 'react';
 import { UserDataContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
+// @ts-ignore
 import LiveTracking from '../components/LiveTracking';
 
 const Home = () => {
@@ -62,6 +65,7 @@ const Home = () => {
     const handlePickupChange = async (e) => {
         setPickup(e.target.value)
         try {
+            // @ts-ignore
             const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/maps/get-suggestions`, {
                 params: { input: e.target.value },
                 headers: {
@@ -78,6 +82,7 @@ const Home = () => {
     const handleDestinationChange = async (e) => {
         setDestination(e.target.value)
         try {
+            // @ts-ignore
             const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/maps/get-suggestions`, {
                 params: { input: e.target.value },
                 headers: {
@@ -170,6 +175,7 @@ const Home = () => {
         setVehiclePanel(true)
         setPanelOpen(false)
 
+        // @ts-ignore
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/get-fare`, {
             params: { pickup, destination },
             headers: {
@@ -184,6 +190,7 @@ const Home = () => {
     }
 
     async function createRide() {
+        // @ts-ignore
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/create`, {
             pickup,
             destination,
@@ -219,6 +226,7 @@ const Home = () => {
                         <input
                             onClick={() => {
                                 setPanelOpen(true)
+                                // @ts-ignore
                                 setActiveField('pickup')
                             }}
                             value={pickup}
@@ -230,6 +238,7 @@ const Home = () => {
                         <input
                             onClick={() => {
                                 setPanelOpen(true)
+                                // @ts-ignore
                                 setActiveField('destination')
                             }}
                             value={destination}
