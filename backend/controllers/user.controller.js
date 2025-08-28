@@ -1,112 +1,95 @@
 const userModel = require('../models/user.model');
-const {validationResult} = require('express-validator');
 const userService = require('../services/user.service');
-const blacklistTokenModel = require('../models/blacklistToken.model');
+const { validationResult } = require('express-validator');
+const blackListTokenModel = require('../models/blackListToken.model');
 
-module.exports.registerUser = async(req,res)=>{
-    try {
-        const error = validationResult(req);
-        if(!error.isEmpty())
-        {
-            return res.status(401).json({error:error.array()})
-        }       
-        
-        const {fullname,email,password} = req.body;
 
-        const isUser = await userModel.findOne({'email':email})
-        if(isUser)
-        {
-            return res.status(400).json({message:'User already exists'});
-        }
+// @ts-ignore
+module.exports.registerUser = async (req, res, next) => {
 
-        // hash the password first then send to save in db
-        // @ts-ignore
-        const hashedpassword = await userModel.hashPassword(password);
-
-        const user = await userService.createUser({
-            firstname:fullname.firstname,
-            lastname:fullname.lastname,
-            email,
-            password:hashedpassword
-        })
-
-        // @ts-ignore
-        const token = user.generateAuthToken();
-
-        res.status(201).json({token,user});
-        
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({error: 'Internal Server Error'});
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
     }
-}
 
-module.exports.loginUser = async(req,res)=>{
+    const { fullname, email, password } = req.body;
 
-    try {
+    const isUserAlready = await userModel.findOne({ email });
 
-        const errors = validationResult(req);
-        if(!errors.isEmpty())
-        {
-            res.status(401).json({error:errors.array()})
-        }
-
-
-        const {email,password} = req.body;
-
-
-
-        // 1️⃣check email
-        const user = await userModel.findOne({email}).select('+password');
-        if(!user)
-        {
-            res.status(401).json('Invalid email and password');
-        }
-
-
-        // 2️⃣check password
-        // @ts-ignore
-        const isMatch = await user.comparePassword(password);
-        if(!isMatch)
-        {
-            res.status(401).json('Invalid email and password');
-        }
-
-
-        // 3️⃣if email and password are valid , then create token for user to remain login for 24 hours as we mentioned, by 
-        //      putting in cookie of website
-        // @ts-ignore
-        const token = await user.generateAuthToken();
-        res.cookie('token',token);
-
-
-        res.status(201).json({token,user});
-        
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({error: 'Internal Server Error'});
+    if (isUserAlready) {
+        return res.status(400).json({ message: 'User already exist' });
     }
+
+   
+    // @ts-ignore
+    const hashedPassword = await userModel.hashPassword(password);
+
+    const user = await userService.createUser({
+        firstname: fullname.firstname,
+        lastname: fullname.lastname,
+        email,
+        password: hashedPassword
+    });
+
+   
+    // @ts-ignore
+    const token = user.generateAuthToken();
+
+    res.status(201).json({ token, user });
+
 
 }
 
-module.exports.userProfile = async(req,res,next)=>{
-       // need of middleware to check token have cred of user, then allow to see profile
-       res.status(201).json(req.user);
+
+// @ts-ignore
+module.exports.loginUser = async (req, res, next) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.body;
+
+    const user = await userModel.findOne({ email }).select('+password');
+
+    if (!user) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+
+    // @ts-ignore
+    const isMatch = await user.comparePassword(password);
+
+    if (!isMatch) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+   
+    // @ts-ignore
+    const token = user.generateAuthToken();
+
+    res.cookie('token', token);
+
+    res.status(200).json({ token, user });
+}
+
+// @ts-ignore
+// @ts-ignore
+module.exports.getUserProfile = async (req, res, next) => {
+
+    res.status(200).json(req.user);
 
 }
 
-module.exports.logoutUser = async(req,res)=>{
-    const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
-
-    if (token) {
-        const existingToken = await blacklistTokenModel.findOne({ token });
-        if (!existingToken) {
-            await blacklistTokenModel.create({ token });
-        }
-    }
-
+// @ts-ignore
+// @ts-ignore
+module.exports.logoutUser = async (req, res, next) => {
     res.clearCookie('token');
-    res.status(200).json({ message: 'Logged Out' });
-}
+    const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];
 
+    await blackListTokenModel.create({ token });
+
+    res.status(200).json({ message: 'Logged out' });
+
+}

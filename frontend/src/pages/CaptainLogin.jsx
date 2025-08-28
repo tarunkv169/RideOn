@@ -1,99 +1,93 @@
-// @ts-nocheck
-import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { CaptainDataContext } from "../context/CapatainContext";
-import rideon from "../assets/photos/rideon.png";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { CaptainDataContext } from '../context/CapatainContext'
+import rideon from '../assets/photos/rideon.png'
 
-const CaptainLogin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Captainlogin = () => {
 
-  const { captain, setCaptain } = useContext(CaptainDataContext);
-  const navigate = useNavigate();
+  const [ email, setEmail ] = useState('')
+  const [ password, setPassword ] = useState('')
+
+  const { captain, setCaptain } = React.useContext(CaptainDataContext)
+  const navigate = useNavigate()
+
+
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/captains/login`,
-        { email, password }
-      );
-
-      if (response.status === 200) {
-        const data = response.data;
-        setCaptain(data.captain);
-        localStorage.setItem("token", data.token);
-        navigate("/captain-home");
-      }
-    } catch (error) {
-      console.error("Captain login failed:", error);
+    const captain = {
+      email: email,
+      password
     }
 
-    setEmail("");
-    setPassword("");
-  };
+    // @ts-ignore
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captain)
 
+    if (response.status === 200) {
+      const data = response.data
+
+      setCaptain(data.captain)
+      localStorage.setItem('token', data.token)
+      navigate('/captain-home')
+
+    }
+
+    setEmail('')
+    setPassword('')
+  }
   return (
-    <div className="min-h-screen flex items-center justify-center w-full bg-center bg-cover bg-[url(https://th.bing.com/th/id/OIP.zJyQVa-CFVZpj_h_MTZTJQAAAA?w=407&h=201&rs=1&pid=ImgDetMain)] ">
-      <div className="h-screen py-12 px-4 max-w-lg w-full">
-        <div className="h-full flex flex-col justify-between w-full bg-black/50 backdrop-blur-lg border border-yellow-500 rounded-xl ">
-          <div>
-            <img
+    <div className='p-7 h-screen flex flex-col justify-between'>
+      <div>
+       <img
               src={rideon}
               alt="no_img"
-              className="w-28 mb-10 mt-4 mx-auto bg-[#f5b901] rounded-tl-lg rounded-br-lg"
+              className="w-28 mb-10 mt-4 mx-auto bg-sky-100 rounded-tl-lg rounded-br-lg"
             />
 
-            <form onSubmit={submitHandler}>
-              <h3 className="text-lg font-semibold mb-2 ml-10">Captain Email</h3>
-              <input
-                required
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="email@example.com"
-                className="flex items-center justify-center text-lg mb-7 mx-auto py-2 px-4 w-10/12 bg-[#f2f2f2] border rounded placeholder:text-base"
-              />
+        <form onSubmit={(e) => {
+          submitHandler(e)
+        }}>
+          <h3 className='text-lg font-medium mb-2'>What's your email</h3>
+          <input
+            required
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value)
+            }}
+            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
+            type="email"
+            placeholder='email@example.com'
+          />
 
-              <h3 className="text-lg font-semibold mb-2 ml-10">Captain Password</h3>
-              <input
-                required
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                className="flex items-center justify-center text-lg mb-7 mx-auto py-2 px-4 w-10/12 bg-[#f2f2f2] border rounded placeholder:text-base"
-              />
+          <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
 
-              <button className="flex items-center justify-center text-white text-lg font-semibold mx-auto py-2 px-4 w-64 bg-black rounded-md">
-                Log in
-              </button>
-            </form>
+          <input
+            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value)
+            }}
+            required type="password"
+            placeholder='password'
+          />
 
-            <p className="flex items-center justify-center text-white mt-1">
-              New here?{" "}
-              <Link
-                to={"/captain-register"}
-                className="ml-1 text-[#3c95de] font-semibold text-shadow-black shadow-lg"
-              >
-                Create an account
-              </Link>
-            </p>
-          </div>
+          <button
+            className='bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
+          >Login</button>
 
-          <div>
-            <Link
-              to={"/login"}
-              className="flex items-center justify-center text-white text-lg font-semibold mx-auto mb-14 py-2 px-4 w-64 bg-[#f5b901] rounded-md"
-            >
-              Log in as User
-            </Link>
-          </div>
-        </div>
+        </form>
+        <p className='text-center'>Join a fleet? <Link to='/captain-signup' className='text-blue-600'>Register as a Captain</Link></p>
+      </div>
+      <div>
+        <Link
+          to='/login'
+          className='bg-[#d5622d] flex items-center justify-center text-white font-semibold mb-5 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
+        >Sign in as User</Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CaptainLogin;
+export default Captainlogin

@@ -1,91 +1,104 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const dotenv = require('dotenv')
+dotenv.config()
+
 
 const captainSchema = new mongoose.Schema({
-    fullname:{
-        firstname:{
+    fullname: {
+        firstname: {
             type: String,
             required: true,
-            minlength:[3,'First name must be at least 3 character long']
+            minlength: [ 3, 'Firstname must be at least 3 characters long' ],
         },
-        lastname:{
+        lastname: {
             type: String,
-            minlength: [3, 'Last name must be at least 3 characters long']
+            minlength: [ 3, 'Lastname must be at least 3 characters long' ],
         }
     },
-    email:{
+    email: {
         type: String,
         required: true,
         unique: true,
-        lowercase: true
+        lowercase: true,
+        match: [ /^\S+@\S+\.\S+$/, 'Please enter a valid email' ]
     },
-    password:{
+    password: {
         type: String,
         required: true,
         select: false,
-        minlength:[6, 'Password must be at least 6 characters long']
     },
-    socketId:{
-        type: String
-    },
-    status:{
+    socketId: {
         type: String,
-        enum:['active','inactive'],
-        default:'inactive'
     },
-    vehicle:{
-        color:{
+
+    status: {
+        type: String,
+        enum: [ 'active', 'inactive' ],
+        default: 'inactive',
+    },
+
+    vehicle: {
+        color: {
             type: String,
             required: true,
+            minlength: [ 3, 'Color must be at least 3 characters long' ],
         },
-        plate:{
+        plate: {
             type: String,
-            required:true
+            required: true,
+            minlength: [ 3, 'Plate must be at least 3 characters long' ],
         },
-        capacity:{
+        capacity: {
             type: Number,
             required: true,
-            min: [ 1, 'Capacity must be at least 1' ]
+            min: [ 1, 'Capacity must be at least 1' ],
         },
-        vehicleType:{
+        vehicleType: {
             type: String,
             required: true,
-            enum:['car','bike','auto']
+            enum: [ 'car', 'motorcycle', 'auto' ],
         }
-
     },
-    location:{
-        ltd:{
-            type: Number
+
+    location: {
+        ltd: {
+            type: Number,
         },
-        lng:{
-            type: Number
+        lng: {
+            type: Number,
         }
-    },
-
+    }
 })
 
 
-captainSchema.methods.generateAuthToken = function(){
-      
+captainSchema.methods.generateAuthToken = function () {
+    // Ensure JWT_SECRET exists
     if (!process.env.JWT_SECRET) {
-        throw new Error('JWT_SECRET is not defined');
+        throw new Error("JWT_SECRET must be defined in your environment variables");
     }
-    const token = jwt.sign({_id : this._id}, process.env.JWT_SECRET);
 
+    const token = jwt.sign(
+        { _id: this._id },
+        process.env.JWT_SECRET, // now guaranteed to exist
+        { expiresIn: '24h' }
+    );
     return token;
+};
+
+
+
+captainSchema.methods.comparePassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
 }
 
-captainSchema.methods.comparePassword = function(password){
-    return bcrypt.compare(password, this.password);
+
+captainSchema.statics.hashPassword = async function (password) {
+    return await bcrypt.hash(password, 10);
 }
 
-captainSchema.statics.hashPassword = function(password){
-    return bcrypt.hash(password, 10);
-}
+const captainModel = mongoose.model('captain', captainSchema)
 
-
-const captainModel = mongoose.model('captainModel',captainSchema);
 
 module.exports = captainModel;

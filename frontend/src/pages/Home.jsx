@@ -16,6 +16,7 @@ import { UserDataContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 // @ts-ignore
 import LiveTracking from '../components/LiveTracking';
+import rideon from '../assets/photos/rideon.png'
 
 const Home = () => {
     const [ pickup, setPickup ] = useState('')
@@ -206,7 +207,11 @@ const Home = () => {
 
     return (
         <div className='h-screen relative overflow-hidden'>
-            <img className='w-16 absolute left-5 top-5' src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="" />
+              <img
+              src={rideon}
+              alt="no_img"
+              className="w-28 mb-10 mt-4 mx-auto bg-sky-100 rounded-tl-lg rounded-br-lg"
+            />
             <div className='h-screen w-screen'>
                 {/* image for temporary use  */}
                 <LiveTracking />

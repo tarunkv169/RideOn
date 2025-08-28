@@ -1,75 +1,70 @@
+
 const userModel = require('../models/user.model');
+// @ts-ignore
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const blacklistTokenModel = require('../models/blacklistToken.model');
+const blackListTokenModel = require('../models/blackListToken.model');
 const captainModel = require('../models/captain.model');
 
-module.exports.authUser = async(req,res,next)=>{
-    const token = req.cookies?.token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
 
-    if(!token)
-    {
-        return res.status(401).json({message:'Unauthorized'});
+module.exports.authUser = async (req, res, next) => {
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    const isblacklistToken = await blacklistTokenModel.findOne({'token':token});
 
-    if(isblacklistToken)
-    {
-        return res.status(401).json({message:'Unauthorized'});
+    const isBlacklisted = await blackListTokenModel.findOne({ token: token });
+
+    if (isBlacklisted) {
+        return res.status(401).json({ message: 'Unauthorized' });
     }
 
     try {
 
+       
         // @ts-ignore
-        const userCred = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await userModel.findById(userCred._id);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        if (!user) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
+
+        const user = await userModel.findById(decoded._id)
 
         req.user = user;
 
         return next();
-        
-        
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({message:'Internal Server Error'})
+
+    } catch (err) {
+        return res.status(401).json({ message: 'Unauthorized' });
     }
 }
 
-module.exports.authCaptain = async(req,res,next)=>{
+module.exports.authCaptain = async (req, res, next) => {
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];
+
+
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const isBlacklisted = await blackListTokenModel.findOne({ token: token });
+
+
+
+    if (isBlacklisted) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+
     try {
-
-        const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
-        if(!token)
-        {
-            return res.status(401).json({message:'Unauthorized'});
-        }
-        
-        const isblacklistToken = await blacklistTokenModel.findOne({'token':token});
-        if(isblacklistToken)
-        {
-            return res.status(401).json({message:'Unauthorized'});
-        }
-        
         // @ts-ignore
-        const captainCred = jwt.verify(token, process.env.JWT_SECRET);
-        const captain = await captainModel.findById(captainCred._id);
-        
-        if(!captain)
-        {
-            return res.status(401).json({message:'Unauthorized'}); 
-        }
-
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const captain = await captainModel.findById(decoded._id)
         req.captain = captain;
 
-        return next();
-        
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({message:'Internal Server Error'})
+        return next()
+    } catch (err) {
+        console.log(err);
+
+        res.status(401).json({ message: 'Unauthorized' });
     }
 }

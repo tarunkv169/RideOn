@@ -11,6 +11,7 @@ module.exports.createRide = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
+
     // @ts-ignore
     const { userId, pickup, destination, vehicleType } = req.body;
 
@@ -72,6 +73,7 @@ module.exports.confirmRide = async (req, res) => {
     try {
         const ride = await rideService.confirmRide({ rideId, captain: req.captain });
 
+       
         // @ts-ignore
         sendMessageToSocketId(ride.user.socketId, {
             event: 'ride-confirmed',
@@ -99,6 +101,7 @@ module.exports.startRide = async (req, res) => {
 
         console.log(ride);
 
+   
         // @ts-ignore
         sendMessageToSocketId(ride.user.socketId, {
             event: 'ride-started',

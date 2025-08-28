@@ -1,25 +1,24 @@
-// @ts-nocheck
-import React from "react";
-import { Link } from "react-router-dom";
-import rideon from "../assets/photos/rideon.png";
+
+import React from 'react'
+import { Link } from 'react-router-dom'
+import rideon from '../assets/photos/rideon.png'    
 
 const Start = () => {
   return (
-    <div className="relative h-screen w-full">
-
-      <div className="absolute inset-0 z-0 bg-cover bg-center bg-[url(https://images.unsplash.com/photo-1649877666973-8e9fe20e511e?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)]"></div>
-
-         <div className="relative z-10 flex flex-col justify-between h-full">
-    
-           <img src={rideon} alt="Ride On Logo" className="w-28 ml-8 mt-8" />
-  
-           <div className="bg-white mx-4 md:mx-20 lg:mx-40 p-6 rounded-lg shadow-lg">
-             <h2 className="text-3xl font-bold mb-4">Get Started</h2>
-             <Link to={"/login"} className="inline-block text-center text-white py-3 w-full bg-black rounded-lg" > Continue</Link>
-           </div>
-         </div>
+    <div>
+      <div className='bg-cover bg-center bg-[url(https://www.verifiedmarketreports.com/images/blogs/07-24/top-7-trends-in-ride-hailing.jpg)] h-screen pt-8 flex justify-between flex-col w-full'>
+          <img
+              src={rideon}
+              alt="no_img"
+              className="w-28 mb-10 mt-4 mx-10  bg-sky-100 rounded-tl-lg rounded-br-lg"
+            />
+        <div className='bg-white pb-8 py-4 px-4'>
+          <h2 className='text-[30px] font-semibold'>Get Started with rideon</h2>
+          <Link to='/login' className='flex items-center justify-center w-full bg-black text-white py-3 rounded-lg mt-5'>Continue</Link>
+        </div>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default Start;
+export default Start

@@ -1,110 +1,93 @@
-// @ts-nocheck
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import rideon from "../assets/photos/rideon.png"
-import car from "../assets/photos/car.jpg"
-import { UserDataContext } from "../context/UserContext";
-import axios from "axios";
+import React, { useState, useContext } from 'react'
+import { Link } from 'react-router-dom'
+import { UserDataContext } from '../context/UserContext'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import rideon from '../assets/photos/rideon.png'
 
+const UserLogin = () => {
+  const [ email, setEmail ] = useState('')
+  const [ password, setPassword ] = useState('')
+  const [ userData, setUserData ] = useState({})
 
-const Userlogin = () => {
-  
-  
-  const navigate = useNavigate();
-  const [email,setEmail]=useState('');
-  const [password,setPassword]=useState('');
-  const [userData,setUserData]=useState({});
-  
-  const [user,setUser] = React.useContext(UserDataContext);
+  const { user, setUser } = useContext(UserDataContext)
+  const navigate = useNavigate()
 
 
 
-  const onSubmitHandler=async(e)=>{
+  const submitHandler = async (e) => {
     e.preventDefault();
-    
-    try {
-      const login_user = ({
-        email: email,
-        password: password
-      })
-  
-  
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`,login_user);
-  
-      if(response.status===201)
-      {
-        const data = response.data;
-        setUser(data.user);
-        localStorage.setItem('token', data.token);
-        navigate('/home');
-      }
-      
-  
-      setEmail('')
-      setPassword('')
-    } catch (error) {
-      console.log(error);
+
+    const userData = {
+      email: email,
+      password: password
     }
+
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData)
+
+    if (response.status === 200) {
+      const data = response.data
+      setUser(data.user)
+      localStorage.setItem('token', data.token)
+      navigate('/home')
+    }
+
+
+    setEmail('')
+    setPassword('')
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-center bg-cover md:bg-contain lg:bg-cover bg-[url(https://images.pexels.com/photos/5584203/pexels-photo-5584203.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load)]">
-      <div className="py-12 px-4 max-w-lg h-screen w-full">
-        <div className="h-full flex flex-col justify-between bg-black/50 backdrop-blur-lg border border-yellow-500 rounded-xl">
-          <div>
-            <img src={rideon} alt="no_img" className="w-28 mb-10 mt-4 mx-auto bg-[#f5b901] rounded-tl-lg rounded-br-lg" />
-            <form onSubmit={(e) => onSubmitHandler(e)}>
+    <div className='p-7 h-screen flex flex-col justify-between'>
+      <div>
+          <img
+              src={rideon}
+              alt="no_img"
+              className="w-28 mb-10 mt-4 mx-auto bg-sky-100 rounded-tl-lg rounded-br-lg"
+            />
 
-              <h3 className="text-lg font-medium mb-2 ml-10">What's your email</h3>
-              <input
-                required
-                value={email}
-                onChange={(e) => {
-                setEmail(e.target.value);
-                }}
-                type="email"
-                placeholder="email@example.com"
-                autoComplete="current-email"
-                className="flex items-center justify-center mb-7 mx-auto py-2 px-4 text-lg w-10/12 bg-[#f2f2f2] rounded border placeholder:text-base"
-              />
+        <form onSubmit={(e) => {
+          submitHandler(e)
+        }}>
+          <h3 className='text-lg font-medium mb-2'>What's your email</h3>
+          <input
+            required
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value)
+            }}
+            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
+            type="email"
+            placeholder='email@example.com'
+          />
 
-              <h3 className="text-lg font-medium mb-2 ml-10">Enter password</h3>
-              <input
-                required
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-                type="password"
-                placeholder="Password"
-                autoComplete="current-password"
-                className="flex items-center justify-center mb-7 mx-auto py-2 px-4 text-lg w-10/12 bg-[#f2f2f2] rounded border placeholder:text-base"
-              />
+          <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
 
-              <button  className="inline-block flex items-center justify-center text-white text-lg font-semibold mx-auto py-2 px-4 w-64 bg-black rounded-md">Log in</button>
-            </form>
+          <input
+            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value)
+            }}
+            required type="password"
+            placeholder='password'
+          />
 
+          <button
+            className='bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
+          >Login</button>
 
-              <p className="text-center text-white text-md mt-1">New here?{" "}<Link to={"/register"} className="text-[#3c95de] font-semibold text-shadow-black shadow-lg">Create an account</Link></p>
-          </div>
-          <div>
-            <Link
-              to={"/Captain-login"}
-              className="inline-block flex items-center justify-center text-lg text-white font-semibold mb-14 mx-auto py-2 px-4 w-64 bg-[#008080] rounded-md"
-            >
-              Log in as Captain
-            </Link>
-          </div>
-        </div>
+        </form>
+        <p className='text-center'>New here? <Link to='/signup' className='text-blue-600'>Create new Account</Link></p>
+      </div>
+      <div>
+        <Link
+          to='/captain-login'
+          className='bg-[#10b461] flex items-center justify-center text-white font-semibold mb-5 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
+        >Sign in as Captain</Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Userlogin;
-
-
-
-
-
-
+export default UserLogin
