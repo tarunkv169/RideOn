@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react'
-import { Link } from 'react-router-dom'
-import { UserDataContext } from '../context/UserContext'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { UserDataContext } from '../context/UserContext'
 import rideon from '../assets/photos/rideon.png'
 
 const UserLogin = () => {
@@ -38,53 +37,58 @@ const UserLogin = () => {
   }
 
   return (
-    <div className='p-7 h-screen flex flex-col justify-between'>
-      <div>
+   
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+     
+      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+        <div>
           <img
-              src={rideon}
-              alt="no_img"
-              className="w-28 mb-10 mt-4 mx-auto bg-sky-100 rounded-tl-lg rounded-br-lg"
+            src={rideon}
+            alt="no_img"
+            className="w-28 mb-6 mx-auto bg-sky-100 rounded-tl-lg rounded-br-lg"
+          />
+
+          <form onSubmit={(e) => {
+            submitHandler(e)
+          }}>
+            <h3 className='text-lg font-medium mb-2'>What's your email</h3>
+            <input
+              required
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value)
+              }}
+              className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
+              type="email"
+              placeholder='email@example.com'
             />
 
-        <form onSubmit={(e) => {
-          submitHandler(e)
-        }}>
-          <h3 className='text-lg font-medium mb-2'>What's your email</h3>
-          <input
-            required
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value)
-            }}
-            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
-            type="email"
-            placeholder='email@example.com'
-          />
+            <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
 
-          <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
+            <input
+              className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value)
+              }}
+              required type="password"
+              placeholder='password'
+            />
 
-          <input
-            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value)
-            }}
-            required type="password"
-            placeholder='password'
-          />
+            <button
+              className='bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
+            >Login</button>
 
-          <button
-            className='bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
-          >Login</button>
+          </form>
+          <p className='text-center'>New here? <Link to='/signup' className='text-blue-600'>Create new Account</Link></p>
+        </div>
 
-        </form>
-        <p className='text-center'>New here? <Link to='/signup' className='text-blue-600'>Create new Account</Link></p>
-      </div>
-      <div>
-        <Link
-          to='/captain-login'
-          className='bg-[#10b461] flex items-center justify-center text-white font-semibold mb-5 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
-        >Sign in as Captain</Link>
+        <div className="mt-6 text-center">
+          <Link
+            to='/captain-login'
+            className='bg-[#10b461] flex items-center justify-center text-white font-semibold mb-5 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
+          >Sign in as Captain</Link>
+        </div>
       </div>
     </div>
   )

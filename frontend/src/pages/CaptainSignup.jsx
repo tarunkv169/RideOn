@@ -60,12 +60,15 @@ const CaptainSignup = () => {
 
   }
   return (
-    <div className='py-5 px-5 h-screen flex flex-col justify-between'>
-      <div>
+ 
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    
+      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+        <div>
            <img
               src={rideon}
               alt="no_img"
-              className="w-28 mb-10 mt-4 mx-auto bg-sky-100 rounded-tl-lg rounded-br-lg"
+              className="w-28 mb-6 mx-auto bg-sky-100 rounded-tl-lg rounded-br-lg"
             />
 
         <form onSubmit={(e) => {
@@ -73,10 +76,10 @@ const CaptainSignup = () => {
         }}>
 
           <h3 className='text-lg w-full  font-medium mb-2'>What's our Captain's name</h3>
-          <div className='flex gap-4 mb-7'>
+          <div className='grid sm:grid-cols-2 gap-4 mb-7'>
             <input
               required
-              className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border  text-lg placeholder:text-base'
+              className='bg-[#eeeeee] w-full rounded-lg px-4 py-2 border  text-lg placeholder:text-base'
               type="text"
               placeholder='First name'
               value={firstName}
@@ -86,7 +89,7 @@ const CaptainSignup = () => {
             />
             <input
               required
-              className='bg-[#eeeeee] w-1/2  rounded-lg px-4 py-2 border  text-lg placeholder:text-base'
+              className='bg-[#eeeeee] w-full  rounded-lg px-4 py-2 border  text-lg placeholder:text-base'
               type="text"
               placeholder='Last name'
               value={lastName}
@@ -121,10 +124,10 @@ const CaptainSignup = () => {
           />
 
           <h3 className='text-lg font-medium mb-2'>Vehicle Information</h3>
-          <div className='flex gap-4 mb-7'>
+          <div className='grid sm:grid-cols-2 gap-4 mb-7'>
             <input
               required
-              className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base'
+              className='bg-[#eeeeee] w-full rounded-lg px-4 py-2 border text-lg placeholder:text-base'
               type="text"
               placeholder='Vehicle Color'
               value={vehicleColor}
@@ -134,7 +137,7 @@ const CaptainSignup = () => {
             />
             <input
               required
-              className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base'
+              className='bg-[#eeeeee] w-full rounded-lg px-4 py-2 border text-lg placeholder:text-base'
               type="text"
               placeholder='Vehicle Plate'
               value={vehiclePlate}
@@ -143,10 +146,10 @@ const CaptainSignup = () => {
               }}
             />
           </div>
-          <div className='flex gap-4 mb-7'>
+          <div className='grid sm:grid-cols-2 gap-4 mb-7'>
             <input
               required
-              className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base'
+              className='bg-[#eeeeee] w-full rounded-lg px-4 py-2 border text-lg placeholder:text-base'
               type="number"
               placeholder='Vehicle Capacity'
               value={vehicleCapacity}
@@ -156,7 +159,7 @@ const CaptainSignup = () => {
             />
             <select
               required
-              className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base'
+              className='bg-[#eeeeee] w-full rounded-lg px-4 py-2 border text-lg placeholder:text-base'
               value={vehicleType}
               onChange={(e) => {
                 setVehicleType(e.target.value)
@@ -176,9 +179,10 @@ const CaptainSignup = () => {
         </form>
         <p className='text-center'>Already have a account? <Link to='/captain-login' className='text-blue-600'>Login here</Link></p>
       </div>
-      <div>
-        <p className='text-[10px] mt-6 leading-tight'>This site is protected by reCAPTCHA and the <span className='underline'>Google Privacy
+      <div className="mt-6 text-center">
+        <p className='text-[10px] leading-tight'>This site is protected by reCAPTCHA and the <span className='underline'>Google Privacy
           Policy</span> and <span className='underline'>Terms of Service apply</span>.</p>
+      </div>
       </div>
     </div>
   )

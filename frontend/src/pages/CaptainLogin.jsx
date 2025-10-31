@@ -13,8 +13,6 @@ const Captainlogin = () => {
   const { captain, setCaptain } = React.useContext(CaptainDataContext)
   const navigate = useNavigate()
 
-
-
   const submitHandler = async (e) => {
     e.preventDefault();
     const captain = {
@@ -31,60 +29,64 @@ const Captainlogin = () => {
       setCaptain(data.captain)
       localStorage.setItem('token', data.token)
       navigate('/captain-home')
-
     }
 
     setEmail('')
     setPassword('')
   }
+
   return (
-    <div className='p-7 h-screen flex flex-col justify-between'>
-      <div>
-       <img
-              src={rideon}
-              alt="no_img"
-              className="w-28 mb-10 mt-4 mx-auto bg-sky-100 rounded-tl-lg rounded-br-lg"
-            />
-
-        <form onSubmit={(e) => {
-          submitHandler(e)
-        }}>
-          <h3 className='text-lg font-medium mb-2'>What's your email</h3>
-          <input
-            required
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value)
-            }}
-            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
-            type="email"
-            placeholder='email@example.com'
+    
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    
+      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+        <div>
+          <img
+            src={rideon}
+            alt="no_img"
+            className="w-28 mb-6 mx-auto bg-sky-100 rounded-tl-lg rounded-br-lg"
           />
 
-          <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
+          <form onSubmit={(e) => { submitHandler(e) }}>
+            <h3 className='text-lg font-medium mb-4 text-center'>Captain Sign in</h3>
 
-          <input
-            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value)
-            }}
-            required type="password"
-            placeholder='password'
-          />
+            <div className='mb-4'>
+              <h3 className='text-lg font-medium mb-2'>What's your email</h3>
+              <input
+                required
+                value={email}
+                onChange={(e) => { setEmail(e.target.value) }}
+                className='bg-[#eeeeee] mb-4 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
+                type="email"
+                placeholder='email@example.com'
+              />
+            </div>
 
-          <button
-            className='bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
-          >Login</button>
+            <div className='mb-4'>
+              <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
+              <input
+                className='bg-[#eeeeee] mb-4 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
+                value={password}
+                onChange={(e) => { setPassword(e.target.value) }}
+                required type="password"
+                placeholder='password'
+              />
+            </div>
 
-        </form>
-        <p className='text-center'>Join a fleet? <Link to='/captain-signup' className='text-blue-600'>Register as a Captain</Link></p>
-      </div>
-      <div>
-        <Link
-          to='/login'
-          className='bg-[#d5622d] flex items-center justify-center text-white font-semibold mb-5 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
-        >Sign in as User</Link>
+            <button
+              className='bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg'
+            >Login</button>
+          </form>
+
+          <p className='text-center mt-3'>Join a fleet? <Link to='/captain-signup' className='text-blue-600'>Register as a Captain</Link></p>
+        </div>
+
+        <div className='mt-6'>
+          <Link
+            to='/login'
+            className='bg-[#d5622d] block text-center text-white font-semibold rounded-lg px-4 py-2 w-full'
+          >Sign in as User</Link>
+        </div>
       </div>
     </div>
   )
